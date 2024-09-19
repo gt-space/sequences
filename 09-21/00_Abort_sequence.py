@@ -28,3 +28,5 @@ FFILL.close()
 
 #Ignitor1.close()
 #Ignitor2.close()
+
+print('Abort sequence ended')

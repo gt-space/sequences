@@ -1,5 +1,5 @@
 ftpt_target = 427 * psi  # in psig, target fuel tank pressure (NEED)
-otpt_target = 397 * psi  # in psig, target lox tank pressure
+otpt_target = 359 * psi  # in psig, target lox tank pressure
 ran = 5 * psi  # acceptable range in psi for bang bang algorithm
 wait_timing = 5
 ignitor_lead = 3000  # how soon to start the igniter before fuel reaches tank
