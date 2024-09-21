@@ -1,5 +1,5 @@
 #After the tanks have been pressurized, and all systems are go
-ftpt_target = 550*psi #in psig, target fuel tank pressure
+ftpt_target = 360*psi #in psig, target fuel tank pressure
 #otpt_target = 400*psi #in psig, target lox tank pressure (not current)
 ran = 5*psi #acceptable range in psi for bang bang algorithm
 wait_timing = 5 #for loop check timing, ms

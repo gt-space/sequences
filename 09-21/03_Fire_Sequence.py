@@ -1,4 +1,4 @@
-ftpt_target = 427 * psi  # in psig, target fuel tank pressure (NEED)
+ftpt_target = 390 * psi  # in psig, target fuel tank pressure (NEED)
 otpt_target = 359 * psi  # in psig, target lox tank pressure
 ran = 5 * psi  # acceptable range in psi for bang bang algorithm
 wait_timing = 5
