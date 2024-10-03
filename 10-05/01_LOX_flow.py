@@ -1,6 +1,6 @@
 #After the tanks have been pressurized, and all systems are go
-ftpt_target = 383*psi #in psig, target fuel tank pressure
-#otpt_target = 385*psi #in psig, target lox tank pressure (not current)
+#ftpt_target = 357*psi #in psig, target fuel tank pressure
+otpt_target = 360*psi #in psig, target lox tank pressure (not current)
 ran = 5*psi #acceptable range in psi for bang bang algorithm
 wait_timing = 5 #for loop check timing, ms
 ignitor_lead = 3000 #how soon to start the igniter before fuel reaches tank
