@@ -1,6 +1,6 @@
 #For setting the initial tank pressure, separate from fire sequence
-ftpt_target = 357 * psi # target fuel tank pressure (NEED)
-otpt_target = 360 * psi # target lox tank pressure
+ftpt_target = 443 * psi # target fuel tank pressure (NEED)
+otpt_target = 432 * psi # target lox tank pressure
 wait_timing = 5 #for loop check timing, ms
 press_time = 10000 #time to run press sequence for
 
