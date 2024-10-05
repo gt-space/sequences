@@ -1,9 +1,10 @@
 abort: only ln2fill and ffill are commented out
-flow: only flowing lox side; commenting out fuel side. otpt_target = 432
-tank press: otpt_target = 432 * psi; ftpt_target = 443 * psi
-fire: otpt_target = 432 * psi
-      ftpt_target = 443 * psi
+flow: only flowing lox side; commenting out fuel side. otpt_target = 400
+tank press: otpt_target = 400 * psi; ftpt_target = 426 * psi
+fire: otpt_target = 426 * psi
+      ftpt_target = 400 * psi
       FMV_time = 690
       OMV_time = 500
-      fire_time = 5000 #will be 10000 for ss ablative
+      fire_time = 3000 #will be 10000 for ss ablative
       ignitor_wait_time #not changed yet, will be
+      ignitor_lead #not changed yet, will be
