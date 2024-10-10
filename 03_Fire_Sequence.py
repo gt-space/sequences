@@ -1,26 +1,39 @@
-ftpt_target = 427 * psi  # in psig, target fuel tank pressure (not current)
-otpt_target = 354 * psi  # in psig, target lox tank pressure (not current)
+ftpt_target = 443 * psi  # in psig, target fuel tank pressure 
+otpt_target = 432 * psi  # in psig, target lox tank pressure
 ran = 5 * psi  # acceptable range in psi for bang bang algorithm
 wait_timing = 5
 ignitor_lead = 3000  # how soon to start the igniter before fuel reaches tank
-FMV_time = 500  # observed FMV actuation time in milliseconds (not current)
-OMV_time = 460  # observed OMV actuation time in milliseconds (not current)
-lox_lead = 150  # time in ms OMV should be completely open before fire
-fire_time = 4000  # time in ms we are going to fire for
+FMV_time = 690  # observed FMV actuation time in milliseconds 
+OMV_time = 500  # observed OMV actuation time in milliseconds
+lox_lead = 200  # time in ms OMV should be completely open before fire
+fire_time = 5000  # time in ms we are going to fire for
 lox_close_lead = 75  # time yo have OMV closed before fmv at end of sequence to avoid oxidizer rich combustion (not current)
 ignitor_wait_time = 1500  # time allocated for sense wire to break
 nichrome_lead = 500  # Time to start nichrome wire
-fs_time = 10000  # time to run fire supression for
-OMV_close_time = 420  # observed OMV closeing time
-FMV_close_time = 300  # observed FMV closeing time
+fs_time = 10000  # time to run fire suppression for
+OMV_close_time = 420  # observed OMV closing time
+FMV_close_time = 300  # observed FMV closing time
 Purge_open_time = 130  # Purge Oxygen Open Time
 Purge_lag_time = 250  # Time to lag purge after main valves command close, should be greater than purge open time
+omv_first = True
 
-omv_open_time = round(
-    (ignitor_lead - OMV_time) / wait_timing)  # Calculates when to open OMV after the sequence has started
-fmv_open_time = round(((ignitor_lead - FMV_time) - (
-            ignitor_lead - lox_lead - OMV_time)) / wait_timing)  # Calculates when to open FMV, based on how recently OMV was opened
-firing_time = round((FMV_time + fire_time) / wait_timing)
+#test if sequence can support FMV_time-OMV_time=lox_lead
+
+if (FMV_time-OMV_time<lox_lead):
+    omv_first = True
+    omv_open_time = round(
+        (ignitor_lead - OMV_time) / wait_timing)  # Calculates when to open OMV after the sequence has started
+    fmv_open_time = round(((ignitor_lead - FMV_time) - (
+                ignitor_lead - lox_lead - OMV_time)) / wait_timing)  # Calculates when to open FMV, based on how recently OMV was opened
+    firing_time = round((FMV_time + fire_time) / wait_timing)
+elif (FMV_time-OMV_time>=lox_lead):
+    omv_first = False
+    fmv_open_time = round(
+        (ignitor_lead - FMV_time) / wait_timing)  # Calculates when to open OMV after the sequence has started
+    omv_open_time = round(((ignitor_lead - OMV_time) - (
+                ignitor_lead - lox_lead - FMV_time)) / wait_timing)  # Calculates when to open FMV, based on how recently OMV was opened
+    firing_time = round((OMV_time + fire_time) / wait_timing)
+
 ignitor_window = round(ignitor_wait_time / wait_timing)
 close_lead = (OMV_close_time + lox_close_lead - FMV_close_time)
 purge_time = (Purge_lag_time - Purge_open_time)
@@ -71,47 +84,91 @@ if Sense.read() > 3.5 * V:
     Ignitor2.close()
     stop()
 
-# Keep Tanks Pressed
-for t in range(omv_open_time):
-    # Initiate bang bang sequence
-    if FTPT.read() > ftpt_target + ran and FBANG.is_open():
-        FBANG.close()
-        # FBANG_state = False
+if (omv_first==True):
+    # Keep Tanks Pressed
+    for t in range(omv_open_time):
+        # Initiate bang bang sequence
+        if FTPT.read() > ftpt_target + ran and FBANG.is_open():
+            FBANG.close()
+            # FBANG_state = False
 
-    if OTPT.read() > otpt_target + ran and OBANG.is_open():
-        OBANG.close()
-    # OBANG_state = False
+        if OTPT.read() > otpt_target + ran and OBANG.is_open():
+            OBANG.close()
+        # OBANG_state = False
 
-    if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
-        FBANG.open()
-        # FBANG_state = True
+        if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
+            FBANG.open()
+            # FBANG_state = True
 
-    if OTPT.read() < otpt_target - ran and OBANG.is_closed():
-        OBANG.open()
-        # OBANG_state = True
+        if OTPT.read() < otpt_target - ran and OBANG.is_closed():
+            OBANG.open()
+            # OBANG_state = True
 
-    wait_for(wait_timing * ms)
-# Checks to make sure the ignitor has gone off
+        wait_for(wait_timing * ms)
+    # Checks to make sure the ignitor has gone off
 
 
-OMV.open()
-for t in range(fmv_open_time):
-    # Initiate bang bang sequence
-    if FTPT.read() > ftpt_target + ran and FBANG.is_open():
-        FBANG.close()
+    OMV.open()
+    for t in range(fmv_open_time):
+        # Initiate bang bang sequence
+        if FTPT.read() > ftpt_target + ran and FBANG.is_open():
+            FBANG.close()
 
-    if OTPT.read() > otpt_target + ran and OBANG.is_open():
-        OBANG.close()
+        if OTPT.read() > otpt_target + ran and OBANG.is_open():
+            OBANG.close()
 
-    if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
-        FBANG.open()
+        if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
+            FBANG.open()
 
-    if OTPT.read() < otpt_target - ran and OBANG.is_closed():
-        OBANG.open()
+        if OTPT.read() < otpt_target - ran and OBANG.is_closed():
+            OBANG.open()
 
-    wait_for(wait_timing * ms)
+        wait_for(wait_timing * ms)
 
-FMV.open()
+    FMV.open()
+
+else:
+    # Keep Tanks Pressed
+    for t in range(fmv_open_time):
+        # Initiate bang bang sequence
+        if FTPT.read() > ftpt_target + ran and FBANG.is_open():
+            FBANG.close()
+            # FBANG_state = False
+
+        if OTPT.read() > otpt_target + ran and OBANG.is_open():
+            OBANG.close()
+        # OBANG_state = False
+
+        if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
+            FBANG.open()
+            # FBANG_state = True
+
+        if OTPT.read() < otpt_target - ran and OBANG.is_closed():
+            OBANG.open()
+            # OBANG_state = True
+
+        wait_for(wait_timing * ms)
+    # Checks to make sure the ignitor has gone off
+
+    FMV.open()
+    for t in range(omv_open_time):
+        # Initiate bang bang sequence
+        if FTPT.read() > ftpt_target + ran and FBANG.is_open():
+            FBANG.close()
+
+        if OTPT.read() > otpt_target + ran and OBANG.is_open():
+            OBANG.close()
+
+        if FTPT.read() < ftpt_target - ran and FBANG.is_closed():
+            FBANG.open()
+
+        if OTPT.read() < otpt_target - ran and OBANG.is_closed():
+            OBANG.open()
+
+        wait_for(wait_timing * ms)
+
+    OMV.open()
+
 Ignitor1.close()
 Ignitor2.close()
 
