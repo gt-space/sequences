@@ -1,0 +1,12 @@
+Vespula Sequences 10-19-24
+abort - 
+flow - 
+tank press - ftpt_target = 192
+	otpt_target = 136
+fire - ftpt_target = 192
+	otpt_target = 136
+	add low lox lead method
+	add interval method
+Ablative 10-19-24
+tankpress/fire - ftpt_target = 339
+	otpt_target = 322
