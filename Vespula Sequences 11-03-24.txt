@@ -5,5 +5,5 @@ tank press - ftpt_target = 461
 	otpt_target = 439
 fire - ftpt_target = 461
 	otpt_target = 439
-	fire_time = 5000
+	fire_time = 4000
 	*running old sequence
