@@ -146,6 +146,7 @@ if OMV_time + lox_lead > FMV_time:
     FMV.open()
 else:
     OMV.open()
+    
 Ignitor1.close()
 Ignitor2.close()
 

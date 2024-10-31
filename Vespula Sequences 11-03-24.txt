@@ -1,0 +1,9 @@
+Vespula Sequences 11-03-24
+abort - no change
+flow - not running
+tank press - ftpt_target = 461
+	otpt_target = 439
+fire - ftpt_target = 461
+	otpt_target = 439
+	fire_time = 5000
+	*running old sequence

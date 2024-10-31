@@ -8,8 +8,6 @@ ignitor_lead = 3000 #how soon to start the igniter before fuel reaches tank
 fire_time = 4000 #time in ms we are going to fire for
 
 
-
-
 print('Fire Sequence Has Begun')
 
 flow_time = round((fire_time)/wait_timing)
