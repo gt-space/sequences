@@ -3,7 +3,7 @@ abort - no change
 tank press - ftpt_target = 277
 	otpt_target = 151
 fire - ftpt_target = 277
-	otpt_target = 151
+	otpt_target = 214
 	fire_time = 4000
 	lox_lead = 180
 	*running new interval method:
